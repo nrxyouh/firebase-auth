@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged, getAuth, type User } from "firebase/auth";
 import { useEffect, useState } from "react";
 
@@ -16,24 +16,19 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setIsFetching(false);
-        setUser(currentUser);
-      } else {
-        setUser(null);
-        setIsFetching(false);
-      }
+      setUser(currentUser);
+      setIsFetching(false);
     });
 
     return () => unsubscribe();
   }, [auth]);
 
   if (isFetching) {
-    return <h2>Loading...</h2>
+    return <h2>Loading...</h2>;
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route index path="/" element={<Home user={user} />} />
         <Route
@@ -45,7 +40,7 @@ function App() {
           }
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
